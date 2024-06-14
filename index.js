@@ -1,9 +1,11 @@
 
 let boxs = document.querySelectorAll(".box");
+let game = document.querySelector(".game");
 let reset = document.querySelector("#reset");
 let msg = document.querySelector(".msg");
 let OO = document.querySelector("#OO");
 let XX = document.querySelector("#XX");
+
 
 
 reset.addEventListener("click",()=>{
@@ -22,25 +24,28 @@ const winPattern = [[1,2,3],[1,4,7],[1,5,9],
            [4,5,6],[7,8,9],[7,5,3],
            [2,5,8],[3,6,9]];
 
-           boxs.forEach((box) => {
-                box.addEventListener("click", ()=>{
+          // boxs.forEach((box) => { normal use of event listner (1)
+                game.addEventListener("click", (event)=>{ // event deligation (2)
                     if(ternO)
                         {
-                           
-                                    box.innerHTML= "O";
+
+// console.dir(event); 
+// console.dir(event.srcElement);
+// console.dir(event.srcElement.outHTML);                          
+                                    event.target.innerHTML= "O";
                                     ternO = false;
                                          
                         }
                     else{
                         
-                                box.innerHTML = "X";
+                                event.target.innerHTML = "X";
                                 ternO = true;         
                         
                     }    
-                    box.disabled=true;
+                    event.target.disabled=true;
                     checkWinner();
-                })
-            });
+                },true);
+            //});
             function checkWinner(){
                     for(pattern of winPattern)
                         {
@@ -55,10 +60,10 @@ const winPattern = [[1,2,3],[1,4,7],[1,5,9],
                                         {
                                             if(pos1 == "O")
                                                 {
-                                                    msg.innerHTML = `!congratulation ${OO.value} is the winner`;
+                                                    msg.innerHTML = `!congratulation ${OO.value ? OO.value + " - O": "O"} is the winner`;
                                                 }
                                             else{
-                                                msg.innerHTML = `!congratulation ${XX.value} is the winner`;
+                                                msg.innerHTML = `!congratulation ${XX.value ? XX.value + " - X": "X"} is the winner`;
                                             }    
                                             disableRestBox();
                                             
